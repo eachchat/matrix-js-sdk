@@ -457,6 +457,10 @@ MatrixCall.prototype._replacedBy = function(newCall) {
     this.hangup(true);
 };
 
+MatrixCall.prototype.setDurationTime = function(time){
+    this.duration = time;
+}
+
 /**
  * Hangup a call.
  * @param {string} reason The reason why the call is being hung up.
@@ -467,10 +471,15 @@ MatrixCall.prototype.hangup = function(reason, suppressEvent) {
 
     debuglog("Ending call " + this.callId);
     terminate(this, "local", reason, !suppressEvent);
+    if(!this.duration){
+        this.duration = 0;
+    }
     const content = {
         version: 0,
         call_id: this.callId,
         reason: reason,
+        duration: this.duration,
+        isVideo: this.type === 'video'
     };
     sendEvent(this, 'm.call.hangup', content);
 };
