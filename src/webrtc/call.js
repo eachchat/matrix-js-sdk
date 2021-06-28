@@ -461,6 +461,10 @@ MatrixCall.prototype.setDurationTime = function(time){
     this.duration = time;
 }
 
+MatrixCall.prototype.setCallerId = function(caller_id){
+    this.caller_id = caller_id;
+}  
+
 /**
  * Hangup a call.
  * @param {string} reason The reason why the call is being hung up.
@@ -479,7 +483,8 @@ MatrixCall.prototype.hangup = function(reason, suppressEvent) {
         call_id: this.callId,
         reason: reason,
         duration: this.duration,
-        isVideo: this.type === 'video'
+        isVideo: this.type === 'video',
+        caller_id: this.caller_id,
     };
     sendEvent(this, 'm.call.hangup', content);
 };
